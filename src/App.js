@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React,{useState} from 'react';
+import { Container,Row,Col } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import InputTodo from './components/InputTodo';
+import TodoList from './components/TodoList';
+import * as uuid from 'uuid'
+export default function App() 
+{
+    const [list, setList] = useState([]);
+    const [text, setText] = useState('');
+    const removeList=()=>
+    {
+        setList([]);
+    }
+    const handleInput=(e)=>
+    {
+        console.log(text)
+        if (text.length===0) 
+        {
+            return;
+        }
+        e.preventDefault();
+        const items=
+        {
+            item:text,
+            id:uuid.v4(),
+            editItem:false
+        }
+        setList([...list,items])
+        console.log(items);
+        setText("")
+    }
+    
+    return (
+        <Container>
+            <Row>
+                <Col md={8} >
+                    <InputTodo text={text} setText={setText} handleInput={handleInput}/>
+                    <TodoList lists={list} setList={setList} removeList={removeList} />
+                </Col>
+            </Row>
+           
+        </Container>
+    )
 }
-
-export default App;
